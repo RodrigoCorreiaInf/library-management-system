@@ -1,36 +1,61 @@
 package com.rodrigo.library_management_system.controller;
 
-import com.rodrigo.library_management_system.dto.AuthResponse;
-import com.rodrigo.library_management_system.dto.LoginRequest;
 import com.rodrigo.library_management_system.dto.RegisterRequest;
+import com.rodrigo.library_management_system.entity.User;
+import com.rodrigo.library_management_system.enums.Role;
+import com.rodrigo.library_management_system.repository.UserRepository;
 import com.rodrigo.library_management_system.service.AuthService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
-@Controller
-@RequestMapping("/auth")
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/auth")
 public class AuthController {
+
+    private final UserRepository userRepository;
+
+    private final PasswordEncoder encoder;
 
     private final AuthService authService;
 
-//    @PostMapping("/register")
-//    public ResponseEntity<AuthResponse> register(
-//            @RequestBody RegisterRequest request) {
-//
-//        return ResponseEntity.ok(authService.register(request));
-//    }
-//
-//    @PostMapping("/login")
-//    public ResponseEntity<AuthResponse> login(
-//            @RequestBody LoginRequest request) {
-//
-//        return ResponseEntity.ok(authService.login(request));
-//    }
+    public AuthController(UserRepository userRepository, PasswordEncoder encoder, AuthService authService) {
+        this.userRepository = userRepository;
+        this.encoder = encoder;
+        this.authService = authService;
+    }
+
+    @PostMapping("/register-client")
+    public String registerClient(@RequestBody RegisterRequest request) {
+
+        User user = new User();
+        user.setName(request.getName());
+        user.setPassword(encoder.encode(request.getPassword()));
+        user.setRole(Role.CLIENT);
+
+        userRepository.save(user);
+
+        return "Client registered";
+    }
+
+    @PostMapping("/register-owner")
+    public String registerOwner(@RequestBody RegisterRequest request) {
+
+        User user = new User();
+        user.setName(request.getName());
+        user.setPassword(encoder.encode(request.getPassword()));
+        user.setRole(Role.OWNER);
+
+        userRepository.save(user);
+
+        return "Owner registered";
+    }
+
+    @GetMapping("/users")
+    public List<User> getUsers() {
+        return authService.getUsers();
+    }
 
 }

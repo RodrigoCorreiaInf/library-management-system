@@ -11,11 +11,10 @@ import java.util.Optional;
 @Repository
 public interface BookRepository extends JpaRepository<Book, String> {
 
-    @Query("""
-            SELECT b
-            FROM Book b
-            WHERE (:author IS NULL OR LOWER(b.author) LIKE LOWER(CONCAT('%', :author, '%')))
-            """)
-    List<Book> searchBooksBy(String author);
+    List<Book> findByAuthorContainingIgnoreCase(String author);
+
+    List<Book> findByTitleContainingIgnoreCase(String title);
+
+    List<Book> findByAuthorContainingIgnoreCaseOrTitleContainingIgnoreCase(String author, String title);
 
 }

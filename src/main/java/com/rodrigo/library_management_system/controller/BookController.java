@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -32,8 +33,9 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Book>> searchBooks(@RequestParam String author) {
-        return new ResponseEntity<>(libraryService.searchBooks(author), HttpStatus.OK);
+    public ResponseEntity<List<Book>> searchBooks(@RequestParam(required = false) String author,
+                                                  @RequestParam(required = false) String title) {
+        return new ResponseEntity<>(libraryService.searchBooks(author, title), HttpStatus.OK);
     }
 
     @PostMapping
@@ -57,9 +59,7 @@ public class BookController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> removeBook(String isbn) {
-//        validateRole(role, Role.OWNER);
-
+    public ResponseEntity<?> removeBook(@RequestParam String isbn) {
         if (isbn != null && libraryService.checkIfExists(isbn)) {
             libraryService.removeBook(isbn);
 
@@ -74,8 +74,8 @@ public class BookController {
     }
 
     @PostMapping("/{isbn}/borrow")
-    public ResponseEntity<BookHistory> borrowBook(@PathVariable String isbn, @RequestParam String clientName) {
-        return ResponseEntity.ok(libraryService.borrowBook(isbn, clientName));
+    public ResponseEntity<BookHistory> borrowBook(@PathVariable String isbn, Principal principal) {
+        return ResponseEntity.ok(libraryService.borrowBook(isbn, principal.getName()));
     }
 
     @PostMapping("/{isbn}/return")

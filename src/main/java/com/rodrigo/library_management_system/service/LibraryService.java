@@ -46,8 +46,17 @@ public class LibraryService {
                 .orElseThrow(() -> new RuntimeException("Book not found"));
     }
 
-    public List<Book> searchBooks(String author) {
-        return bookRepository.searchBooksBy(author);
+    public List<Book> searchBooks(String author, String title) {
+        if (author != null && title != null) {
+            return bookRepository.findByAuthorContainingIgnoreCaseOrTitleContainingIgnoreCase(author, title);
+        }
+        if (author != null) {
+            return bookRepository.findByAuthorContainingIgnoreCase(author);
+        }
+        if (title != null) {
+            return bookRepository.findByTitleContainingIgnoreCase(title);
+        }
+        return bookRepository.findAll();
     }
 
     public void removeBook(String isbn) {

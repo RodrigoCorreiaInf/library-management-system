@@ -1,8 +1,14 @@
 package com.rodrigo.library_management_system.repository;
 
+import com.rodrigo.library_management_system.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-public class UserRepository {
+public interface UserRepository extends JpaRepository<User, String> {
+
+    Optional<User> findByName(String name);
 
 }
