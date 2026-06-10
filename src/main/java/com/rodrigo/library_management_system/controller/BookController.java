@@ -1,10 +1,12 @@
 package com.rodrigo.library_management_system.controller;
 
 import com.rodrigo.library_management_system.dto.CreateBookRequest;
+import com.rodrigo.library_management_system.dto.NaturalSearchRequest;
 import com.rodrigo.library_management_system.dto.UpdateBookRequest;
 import com.rodrigo.library_management_system.entity.Book;
 import com.rodrigo.library_management_system.entity.BookHistory;
 import com.rodrigo.library_management_system.service.LibraryService;
+import com.rodrigo.library_management_system.service.NaturalLanguageSearchService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +20,11 @@ public class BookController {
 
     private final LibraryService libraryService;
 
-    public BookController(LibraryService libraryService) {
+    private final NaturalLanguageSearchService naturalLanguageSearchService;
+
+    public BookController(LibraryService libraryService, NaturalLanguageSearchService naturalLanguageSearchService) {
         this.libraryService = libraryService;
+        this.naturalLanguageSearchService = naturalLanguageSearchService;
     }
 
     @GetMapping
@@ -36,6 +41,11 @@ public class BookController {
     public ResponseEntity<List<Book>> searchBooks(@RequestParam(required = false) String author,
                                                   @RequestParam(required = false) String title) {
         return new ResponseEntity<>(libraryService.searchBooks(author, title), HttpStatus.OK);
+    }
+
+    @GetMapping("/search/natural")
+    public ResponseEntity<List<Book>> searchBooksNatural(@RequestParam String query) {
+        return new ResponseEntity<>(naturalLanguageSearchService.search(query), HttpStatus.OK);
     }
 
     @PostMapping
