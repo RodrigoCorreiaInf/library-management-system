@@ -1,13 +1,10 @@
 package com.rodrigo.library_management_system.entity;
 
 
-import com.rodrigo.library_management_system.valueobj.BookStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.UUID;
 
 @NoArgsConstructor
 @Getter

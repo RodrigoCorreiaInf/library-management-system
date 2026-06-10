@@ -1,6 +1,6 @@
 package com.rodrigo.library_management_system.entity;
 
-import com.rodrigo.library_management_system.valueobj.Role;
+import com.rodrigo.library_management_system.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,12 +14,6 @@ import java.util.UUID;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
-
-    @Column(unique = true)
-    private String email;
-
     private String name;
 
     private String password;
