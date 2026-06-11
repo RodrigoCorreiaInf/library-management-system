@@ -42,7 +42,7 @@ provisioning—is fully containerized. You do not need Java, Maven, or Ollama in
 
 ### Spin Up the Application
 
-1. Open your terminal in the project root directory.
+1. Clone the project and open your terminal in the project root directory.
 2. Run the following command:
    ```bash
    docker compose up --build
