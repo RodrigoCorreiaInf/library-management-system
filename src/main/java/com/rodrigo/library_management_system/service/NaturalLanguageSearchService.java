@@ -22,28 +22,37 @@ public class NaturalLanguageSearchService {
     }
 
     public List<Book> search(String userQuery) {
-
         String prompt = """
-                Convert the user's request into:
-                - title
-                - author
-
-                User query:
-                %s
-
-                Return as a BookSearchCriteria object only.
+                Extract the search criteria from the user's request.
+                User query: %s
                 """.formatted(userQuery);
 
-        BookSearchCriteria response = chatClient.prompt()
+        BookSearchCriteria criteria = chatClient.prompt()
                 .user(prompt)
                 .call()
-                .entity(BookSearchCriteria.class);
+                .entity(BookSearchCriteria.class); // Spring AI injects JSON instructions here
 
-        if (response == null) {
+        if (criteria == null) {
             return bookRepository.findAll();
         }
 
-        return bookRepository.findByAuthorContainingIgnoreCaseOrTitleContainingIgnoreCase(response.getAuthor(), response.getTitle());
+        String author = (criteria.getAuthor() == null || criteria.getAuthor().isBlank()) ? null : criteria.getAuthor().trim();
+        String title = (criteria.getTitle() == null || criteria.getTitle().isBlank()) ? null : criteria.getTitle().trim();
+
+        IO.println(author);
+        IO.println(title);
+
+        if (author == null && title == null) {
+            return bookRepository.findAll();
+        }
+
+        if (author != null && title != null) {
+            return bookRepository.findByAuthorContainingIgnoreCaseAndTitleContainingIgnoreCase(author, title);
+        } else if (author != null) {
+            return bookRepository.findByAuthorContainingIgnoreCase(author);
+        } else {
+            return bookRepository.findByTitleContainingIgnoreCase(title);
+        }
     }
 
 }

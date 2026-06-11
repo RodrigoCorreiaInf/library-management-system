@@ -21,11 +21,13 @@ spring:
       server:
         name: library-management-system
         version: 1.0.0
+        stdio: false
+        sse-endpoint: /mcp/sse
     ollama:
       base-url: http://library-ollama:11434
       chat:
         options:
-          model: llama3
+          model: llama3.1
 
 springdoc:
   swagger-ui:

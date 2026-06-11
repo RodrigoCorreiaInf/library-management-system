@@ -1,0 +1,324 @@
+openapi: "3.1.0"
+info:
+  title: "library_management_system API"
+  description: "library_management_system API"
+  version: "1.0.0"
+servers:
+  - url: "https://library_management_system"
+paths:
+  /api/auth/register-client:
+    post:
+      summary: "POST api/auth/register-client"
+      operationId: "registerClient"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /api/auth/register-owner:
+    post:
+      summary: "POST api/auth/register-owner"
+      operationId: "registerOwner"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /api/auth/users:
+    get:
+      summary: "GET api/auth/users"
+      operationId: "getUsers"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/User"
+  /books/{isbn}:
+    put:
+      summary: "PUT books/{isbn}"
+      operationId: "updateBook"
+      parameters:
+        - name: "isbn"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateBookRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+    get:
+      summary: "GET books/{isbn}"
+      operationId: "getBookByIsbn"
+      parameters:
+        - name: "isbn"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Book"
+  /books:
+    post:
+      summary: "POST books"
+      operationId: "addBook"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBookRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+    delete:
+      summary: "DELETE books"
+      operationId: "removeBook"
+      parameters:
+        - name: "isbn"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+    get:
+      summary: "GET books"
+      operationId: "getAllBooks"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Book"
+  /books/{isbn}/borrow:
+    post:
+      summary: "POST books/{isbn}/borrow"
+      operationId: "borrowBook"
+      parameters:
+        - name: "isbn"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookHistory"
+  /books/{isbn}/return:
+    post:
+      summary: "POST books/{isbn}/return"
+      operationId: "returnBook"
+      parameters:
+        - name: "isbn"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookHistory"
+  /books/search:
+    get:
+      summary: "GET books/search"
+      operationId: "searchBooks"
+      parameters:
+        - name: "author"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+        - name: "title"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Book"
+  /books/search/natural:
+    get:
+      summary: "GET books/search/natural"
+      operationId: "searchBooksNatural"
+      parameters:
+        - name: "query"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Book"
+  /history/{isbn}:
+    get:
+      summary: "GET history/{isbn}"
+      operationId: "getBookHistory"
+      parameters:
+        - name: "isbn"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/BookHistory"
+  /api/chat:
+    post:
+      summary: "POST api/chat"
+      operationId: "chat"
+      parameters:
+        - name: "message"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+        - name: "sessionId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+            default: "default-session"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+components:
+  schemas:
+    RegisterRequest:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        password:
+          type: "string"
+    User:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        password:
+          type: "string"
+        role:
+          type: "string"
+          enum:
+            - "CLIENT"
+            - "OWNER"
+    UpdateBookRequest:
+      type: "object"
+      properties:
+        title:
+          type: "string"
+        author:
+          type: "string"
+    CreateBookRequest:
+      type: "object"
+      properties:
+        isbn:
+          type: "string"
+        title:
+          type: "string"
+        author:
+          type: "string"
+    Book:
+      type: "object"
+      properties:
+        isbn:
+          type: "string"
+        title:
+          type: "string"
+        author:
+          type: "string"
+        available:
+          type: "boolean"
+    BookHistory:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        book:
+          $ref: "#/components/schemas/Book"
+        borrowedBy:
+          type: "string"
+        borrowedAt:
+          type: "string"
+          format: "date-time"
+        returnedAt:
+          type: "string"
+          format: "date-time"
+        returnedLate:
+          type: "boolean"
