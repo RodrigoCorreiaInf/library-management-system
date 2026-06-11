@@ -36,8 +36,8 @@ services:
       /bin/sh -c "
       echo 'Waiting for Ollama to start...';
       while ! curl -s http://ollama-service:11434/api/tags > /dev/null; do sleep 1; done;
-      echo 'Ollama is up! Pulling llama3 model...';
-      curl -X POST http://ollama-service:11434/api/pull -d '{\"name\": \"llama3\"}';
+      echo 'Ollama is up! Pulling llama3.1 model...';
+      curl -X POST http://ollama-service:11434/api/pull -d '{\"name\": \"llama3.1\"}';
       echo 'Model pulled successfully!';"
 
   # 4. Spring Boot Application (Waits for BOTH DB and Model Puller)
