@@ -21,7 +21,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (userRepository.findByName("owner@library.com").isEmpty()) {
+        if (userRepository.findByName("owner").isEmpty()) {
             User owner = new User();
             owner.setName("owner");
             owner.setPassword(passwordEncoder.encode("owner123")); // Dynamically hashes perfectly
@@ -30,7 +30,7 @@ public class DataInitializer implements CommandLineRunner {
             System.out.println("Generated Owner: owner / owner123");
         }
 
-        if (userRepository.findByName("client@library.com").isEmpty()) {
+        if (userRepository.findByName("client").isEmpty()) {
             User client = new User();
             client.setName("client");
             client.setPassword(passwordEncoder.encode("client123")); // Dynamically hashes perfectly

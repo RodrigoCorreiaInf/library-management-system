@@ -93,12 +93,4 @@ public class BookController {
         return ResponseEntity.ok(libraryService.returnBook(isbn));
     }
 
-
-//    @GetMapping("/{userId/borrowed")
-//    public ResponseEntity<List<Book>> getBorrowedBooks(@PathVariable UUID userId) {
-////         validateRole(role, Role.OWNER);
-//        return new ResponseEntity<>("Borrowed book", HttpStatus.OK);
-//    }
-
-
 }

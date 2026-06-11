@@ -21,7 +21,7 @@ public class ChatController {
 
         this.chatClient = chatClientBuilder
                 .defaultSystem("""
-                        You are an intelligent library assistant running inside a Docker cluster. 
+                        You are an intelligent library assistant running inside a Docker cluster.
                         You have full access to tools to manage inventory, search books, and process loans.
                         Always use your tools when a user asks you to list, search, add, update, borrow, or return books.
                         If a tool execution fails or returns an error, explain the issue clearly to the user.
