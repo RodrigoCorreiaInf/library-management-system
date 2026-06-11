@@ -48,7 +48,7 @@ public class LibraryService {
 
     public List<Book> searchBooks(String author, String title) {
         if (author != null && title != null) {
-            return bookRepository.findByAuthorContainingIgnoreCaseOrTitleContainingIgnoreCase(author, title);
+            return bookRepository.findByAuthorContainingIgnoreCaseAndTitleContainingIgnoreCase(author, title);
         }
         if (author != null) {
             return bookRepository.findByAuthorContainingIgnoreCase(author);
