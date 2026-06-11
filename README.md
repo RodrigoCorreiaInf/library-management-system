@@ -31,7 +31,7 @@ Endpoints
 
 ---
 
-## 🚀 Quick Start (Docker Compose)
+## Quick Start (Docker Compose)
 
 The entire environment—including the Java application database structures, local Ollama instance, and automated model
 provisioning—is fully containerized. You do not need Java, Maven, or Ollama installed on your host machine.
@@ -49,6 +49,7 @@ provisioning—is fully containerized. You do not need Java, Maven, or Ollama in
 3. The first build can take a while, so be patient :).
 4. Head over to http://localhost:8080/swagger-ui/index.html#/ or import the Postman collection called
    VestasLibraryManagementSystem.postman_collection into your local Postman and start using right away.
+   If you use Postman, remember to change the base_url to http://localhost:8080, and the other variables as you wish.
    Be aware that request related to AI can take a little while and sometimes return wrong responses (if that happens
    send another request).
 5. Keep in mind that there is role-based authentication.
